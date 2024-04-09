@@ -12,7 +12,8 @@ class Calculadora {
             DIV: 1,
             MULT: 2,
             SUB: 3,
-            SUM: 4
+            SUM: 4,
+            RQ: 5,
         };
         this.opAtual = this.op.NOP;
     }
@@ -27,7 +28,7 @@ class Calculadora {
         if (this.estadoErro) return;
         if (dig.length != 1) return;
         if ((dig < '0' || dig > '9') && dig != '.') return;
-        if (!this.iniciouSegundo && this.opAtual != this.op.NOP) {
+        if (!this.iniciouSegundo && this.opAtual != this.op.NOP && this.op.RQ) {
             this.iniciouSegundo = true;
             this.ptDecimal = false;
             this.nrVisor = '0';
@@ -60,7 +61,11 @@ class Calculadora {
             case '/':
                 this.opAtual = this.op.DIV;
                 break;
+            case 'RQ':
+                this.opAtual = this.op.RQ;
+                break;
         }
+        
         this.memTemp = this.nrVisor;
     }
 
@@ -88,6 +93,20 @@ class Calculadora {
                     return;
                 }
                 resultado = num1 / num2;
+                    break;
+                case this.op.RQ:
+                if (num1 < 0) {
+                    this.estadoErro = true;
+                    this.nrVisor = 'ERRO!';
+                    return;
+                } 
+                let aproximacao = num1 / 2;
+                for (let i = 0; i < 10; i++) {
+                    aproximacao = (aproximacao + num1 / aproximacao) / 2;
+                }
+                aproximacao.toString()
+                resultado = aproximacao;  
+                break;
         }
         this.opAtual = this.op.NOP;
         this.ptDecimal = false;
