@@ -14,6 +14,7 @@ class Calculadora {
             SUB: 3,
             SUM: 4,
             RQ: 5,
+            TS: 6,
         };
         this.opAtual = this.op.NOP;
     }
@@ -48,6 +49,7 @@ class Calculadora {
     // Define a operação atual
     defineOperacao(op) {
         if (this.estadoErro) return;
+        
         switch (op) {
             case '+':
                 this.opAtual = this.op.SUM;
@@ -64,9 +66,13 @@ class Calculadora {
             case 'RQ':
                 this.opAtual = this.op.RQ;
                 break;
+            case 'TS':
+                this.opAtual = this.op.TS;
+                break;    
         }
         
         this.memTemp = this.nrVisor;
+      
     }
 
     // Executa operação: tecla IGUAL
@@ -106,6 +112,10 @@ class Calculadora {
                 }
                 aproximacao.toString()
                 resultado = aproximacao;  
+                break;
+                
+                case this.op.TS:
+                resultado = num1 * -1;
                 break;
         }
         this.opAtual = this.op.NOP;
@@ -173,7 +183,7 @@ let defineOp = (op) => {
         igual();
         atualizaVisor();
     }
-    calculadora.defineOperacao(op);
+    calculadora.defineOperacao(op);   
 }
 
 // CALCULA A OPERAÇÃO
@@ -208,7 +218,6 @@ let teclaRM = () => {
 let teclaCLM = () => {
     calculadora.teclaCLM();
 }
-
 
 
 // ==========  INICIALIZAÇÃO ===================
